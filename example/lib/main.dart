@@ -30,6 +30,15 @@ class MyApp extends StatelessWidget {
                 children: [
                   RangeDatePicker(
                     centerLeadingDate: true,
+                    customHeaderBuilder: ((details) => ConstrainedBox(
+                        constraints: BoxConstraints(
+                            maxWidth:
+                                MediaQuery.of(context).size.width * 0.7),child: Row(children: [
+                                  GestureDetector(
+                                    onTap: details.onDateTap,
+                                    child: Text(details.displayedDate))
+                                ],),)
+                                ),
                     minDate: DateTime(2020, 10, 10),
                     maxDate: DateTime(2024, 10, 30),
                   ),

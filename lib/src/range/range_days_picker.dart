@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class RangeDaysPicker extends StatefulWidget {
     this.selectedEndDate,
     this.daysOfTheWeekTextStyle,
     this.enabledCellsTextStyle,
+    this.customHeaderBuilder,
     this.enabledCellsDecoration = const BoxDecoration(),
     this.disabledCellsTextStyle,
     this.disabledCellsDecoration = const BoxDecoration(),
@@ -199,6 +201,8 @@ class RangeDaysPicker extends StatefulWidget {
   /// The radius of the ink splash.
   final double? splashRadius;
 
+  final CustomHeader? customHeaderBuilder;
+
   /// Centring the leading date. e.g:
   ///
   /// <       December 2023      >
@@ -378,46 +382,78 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
 
     final highlightColor =
         widget.highlightColor ?? Theme.of(context).highlightColor;
-    //
-    //
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Header(
-          previousPageSemanticLabel: widget.previousPageSemanticLabel,
-          nextPageSemanticLabel: widget.nextPageSemanticLabel,
-          centerLeadingDate: widget.centerLeadingDate,
-          leadingDateTextStyle: leadingDateTextStyle,
-          slidersColor: slidersColor,
-          slidersSize: slidersSize,
-          onDateTap: () => widget.onLeadingDateTap?.call(),
-          displayedDate: MaterialLocalizations.of(context)
-              .formatMonthYear(_displayedMonth!)
-              .replaceAll('٩', '9')
-              .replaceAll('٨', '8')
-              .replaceAll('٧', '7')
-              .replaceAll('٦', '6')
-              .replaceAll('٥', '5')
-              .replaceAll('٤', '4')
-              .replaceAll('٣', '3')
-              .replaceAll('٢', '2')
-              .replaceAll('١', '1')
-              .replaceAll('٠', '0'),
-          onNextPage: () {
-            _pageController.nextPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          },
-          onPreviousPage: () {
-            _pageController.previousPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          },
-        ),
+        widget.customHeaderBuilder != null
+            ? widget.customHeaderBuilder!(HeaderDetails(
+                previousPageSemanticLabel: widget.previousPageSemanticLabel,
+                nextPageSemanticLabel: widget.nextPageSemanticLabel,
+                centerLeadingDate: widget.centerLeadingDate,
+                leadingDateTextStyle: leadingDateTextStyle,
+                slidersColor: slidersColor,
+                slidersSize: slidersSize,
+                onDateTap: () => widget.onLeadingDateTap?.call(),
+                displayedDate: MaterialLocalizations.of(context)
+                    .formatMonthYear(_displayedMonth!)
+                    .replaceAll('٩', '9')
+                    .replaceAll('٨', '8')
+                    .replaceAll('٧', '7')
+                    .replaceAll('٦', '6')
+                    .replaceAll('٥', '5')
+                    .replaceAll('٤', '4')
+                    .replaceAll('٣', '3')
+                    .replaceAll('٢', '2')
+                    .replaceAll('١', '1')
+                    .replaceAll('٠', '0'),
+                onNextPage: () {
+                  _pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                },
+                onPreviousPage: () {
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                },
+              ))
+            : Header(
+                previousPageSemanticLabel: widget.previousPageSemanticLabel,
+                nextPageSemanticLabel: widget.nextPageSemanticLabel,
+                centerLeadingDate: widget.centerLeadingDate,
+                leadingDateTextStyle: leadingDateTextStyle,
+                slidersColor: slidersColor,
+                slidersSize: slidersSize,
+                onDateTap: () => widget.onLeadingDateTap?.call(),
+                displayedDate: MaterialLocalizations.of(context)
+                    .formatMonthYear(_displayedMonth!)
+                    .replaceAll('٩', '9')
+                    .replaceAll('٨', '8')
+                    .replaceAll('٧', '7')
+                    .replaceAll('٦', '6')
+                    .replaceAll('٥', '5')
+                    .replaceAll('٤', '4')
+                    .replaceAll('٣', '3')
+                    .replaceAll('٢', '2')
+                    .replaceAll('١', '1')
+                    .replaceAll('٠', '0'),
+                onNextPage: () {
+                  _pageController.nextPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                },
+                onPreviousPage: () {
+                  _pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.ease,
+                  );
+                },
+              ),
         const SizedBox(height: 10),
         SizedBox(
           key: ValueKey(maxHeight),

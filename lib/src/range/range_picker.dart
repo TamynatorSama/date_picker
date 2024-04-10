@@ -75,6 +75,7 @@ class RangeDatePicker extends StatefulWidget {
     this.slidersSize,
     this.highlightColor,
     this.splashColor,
+    this.customHeaderBuilder,
     this.splashRadius,
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel,
@@ -94,6 +95,10 @@ class RangeDatePicker extends StatefulWidget {
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTime? currentDate;
+
+  ///this is for creating custom date header
+  ///it containst the neccesssay information for creating one
+  final CustomHeader? customHeaderBuilder;
 
   /// The date which will be displayed on first opening. If not specified, the picker
   /// will default to `DateTime.now()`. If `DateTime.now()` does not fall within the
@@ -309,6 +314,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
           padding: widget.padding,
           child: RangeDaysPicker(
             centerLeadingDate: widget.centerLeadingDate,
+            customHeaderBuilder: widget.customHeaderBuilder,
             currentDate:
                 DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             initialDate: _diplayedDate,
@@ -386,6 +392,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
             slidersSize: widget.slidersSize,
             leadingDateTextStyle: widget.leadingDateTextStyle,
             splashColor: widget.splashColor,
+            customHeaderBuilder: widget.customHeaderBuilder,
             highlightColor: widget.highlightColor,
             splashRadius: widget.splashRadius,
             previousPageSemanticLabel: widget.previousPageSemanticLabel,
@@ -415,6 +422,7 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
           child: YearsPicker(
             centerLeadingDate: widget.centerLeadingDate,
             selectedDate: null,
+            customHeaderBuilder: widget.customHeaderBuilder,
             initialDate: _diplayedDate,
             maxDate: DateUtils.dateOnly(widget.maxDate),
             minDate: DateUtils.dateOnly(widget.minDate),
@@ -453,3 +461,59 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
     }
   }
 }
+
+class HeaderDetails {
+  const HeaderDetails({
+    required this.displayedDate,
+    required this.onDateTap,
+    required this.onNextPage,
+    required this.onPreviousPage,
+    required this.slidersColor,
+    required this.slidersSize,
+    required this.leadingDateTextStyle,
+    this.centerLeadingDate = false,
+    this.previousPageSemanticLabel,
+    this.nextPageSemanticLabel,
+  });
+  final String displayedDate;
+
+  /// the text style for the [displayedDate] in the header.
+  final TextStyle leadingDateTextStyle;
+
+  /// Called when the displayed date is tapped. This can
+  /// be used to trigger actions related to selecting or
+  /// interacting with the displayed date.
+  final VoidCallback onDateTap;
+
+  /// called when the user wants to navigate to the next
+  /// page in the calendar. This function is associated
+  /// with the forward navigation control.
+  final VoidCallback onNextPage;
+
+  /// called when the user wants to navigate to the
+  /// previous page in the calendar. This function is
+  /// associated with the backward navigation control.
+  final VoidCallback onPreviousPage;
+
+  /// The color of the page navigation sliders
+  /// (forward and backward).
+  final Color slidersColor;
+
+  /// The size of the page navigation sliders
+  /// (forward and backward).
+  final double slidersSize;
+
+  /// Centring the leading date. e.g:
+  ///
+  /// <       December 2023      >
+  ///
+  final bool centerLeadingDate;
+
+  /// Semantic label for button to go to the previous page.
+  final String? previousPageSemanticLabel;
+
+  /// Semantic label for button to go to the next page.
+  final String? nextPageSemanticLabel;
+}
+
+typedef CustomHeader = Widget Function(HeaderDetails details);

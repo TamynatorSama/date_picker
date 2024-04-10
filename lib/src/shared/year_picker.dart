@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:date_picker_plus/src/shared/utils.dart';
 import 'package:flutter/material.dart';
 
@@ -64,6 +65,7 @@ class YearsPicker extends StatefulWidget {
     this.slidersSize,
     this.highlightColor,
     this.splashColor,
+    this.customHeaderBuilder,
     this.splashRadius,
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel = 'Previous Year',
@@ -116,6 +118,8 @@ class YearsPicker extends StatefulWidget {
 
   /// Called when the user picks a date.
   final ValueChanged<DateTime>? onDateSelected;
+
+  final CustomHeader? customHeaderBuilder;
 
   /// The earliest date the user is permitted to pick.
   ///
@@ -396,7 +400,31 @@ class _YearsPickerState extends State<YearsPicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Header(
+        widget.customHeaderBuilder != null
+            ? widget.customHeaderBuilder!(HeaderDetails(
+                previousPageSemanticLabel: widget.previousPageSemanticLabel,
+          nextPageSemanticLabel: widget.nextPageSemanticLabel,
+          centerLeadingDate: widget.centerLeadingDate,
+          leadingDateTextStyle: leadingDateTextStyle,
+          slidersColor: slidersColor,
+          slidersSize: slidersSize,
+          onDateTap: () => widget.onLeadingDateTap?.call(),
+          displayedDate:
+              '${_displayedRange?.start.year} - ${_displayedRange?.end.year}',
+          onNextPage: () {
+            _pageController.nextPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease,
+            );
+          },
+          onPreviousPage: () {
+            _pageController.previousPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease,
+            );
+          },
+              ))
+            :Header(
           previousPageSemanticLabel: widget.previousPageSemanticLabel,
           nextPageSemanticLabel: widget.nextPageSemanticLabel,
           centerLeadingDate: widget.centerLeadingDate,

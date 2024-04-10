@@ -1,3 +1,4 @@
+import 'package:date_picker_plus/date_picker_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'header.dart';
@@ -66,6 +67,7 @@ class MonthPicker extends StatefulWidget {
     this.slidersSize,
     this.highlightColor,
     this.splashColor,
+    this.customHeaderBuilder,
     this.splashRadius,
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel = 'Previous Month',
@@ -125,6 +127,8 @@ class MonthPicker extends StatefulWidget {
   ///
   /// Note that only year & month are considered. time & day fields are ignored.
   final DateTime minDate;
+
+  final CustomHeader? customHeaderBuilder;
 
   /// The latest date the user is permitted to pick.
   ///
@@ -378,7 +382,30 @@ class _MonthPickerState extends State<MonthPicker> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Header(
+        widget.customHeaderBuilder != null
+            ? widget.customHeaderBuilder!(HeaderDetails(
+                previousPageSemanticLabel: widget.previousPageSemanticLabel,
+          nextPageSemanticLabel: widget.nextPageSemanticLabel,
+          centerLeadingDate: widget.centerLeadingDate,
+          leadingDateTextStyle: leadingDateTextStyle,
+          slidersColor: slidersColor,
+          slidersSize: slidersSize,
+          onDateTap: () => widget.onLeadingDateTap?.call(),
+          displayedDate: _displayedYear!.year.toString(),
+          onNextPage: () {
+            _pageController.nextPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease,
+            );
+          },
+          onPreviousPage: () {
+            _pageController.previousPage(
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.ease,
+            );
+          },
+              ))
+            : Header(
           previousPageSemanticLabel: widget.previousPageSemanticLabel,
           nextPageSemanticLabel: widget.nextPageSemanticLabel,
           centerLeadingDate: widget.centerLeadingDate,
