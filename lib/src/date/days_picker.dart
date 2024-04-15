@@ -67,6 +67,7 @@ class DaysPicker extends StatefulWidget {
     this.slidersSize,
     this.highlightColor,
     this.splashColor,
+    this.maxHeight,
     this.splashRadius,
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel = 'Previous Day',
@@ -106,6 +107,7 @@ class DaysPicker extends StatefulWidget {
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTime? initialDate;
+  final double? maxHeight;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
@@ -258,6 +260,9 @@ class _DaysPickerState extends State<DaysPicker> {
     _pageController = PageController(
       initialPage: DateUtils.monthDelta(widget.minDate, _displayedMonth!),
     );
+    if (widget.maxHeight != null) {
+      maxHeight = widget.maxHeight!;
+    }
     super.initState();
   }
 

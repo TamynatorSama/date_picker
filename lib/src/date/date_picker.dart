@@ -72,6 +72,7 @@ class DatePicker extends StatefulWidget {
     this.leadingDateTextStyle,
     this.slidersColor,
     this.slidersSize,
+    this.maxHeight,
     this.highlightColor,
     this.splashColor,
     this.splashRadius,
@@ -158,6 +159,7 @@ class DatePicker extends StatefulWidget {
   /// defaults to [TextTheme.titleLarge] with a [FontWeight.normal]
   /// and [ColorScheme.primary] color.
   final TextStyle? currentDateTextStyle;
+  final double? maxHeight;
 
   /// The cell decoration of the current date.
   ///
@@ -272,6 +274,7 @@ class _DatePickerState extends State<DatePicker> {
         return Padding(
           padding: widget.padding,
           child: DaysPicker(
+            maxHeight: widget.maxHeight,
             centerLeadingDate: widget.centerLeadingDate,
             initialDate: _displayedDate,
             selectedDate: _selectedDate,
