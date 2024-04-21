@@ -22,6 +22,7 @@ class RangeDaysView extends StatelessWidget {
     required this.currentDate,
     required this.minDate,
     required this.maxDate,
+    required this.endSelectedDecration,
     required this.selectedStartDate,
     required this.selectedEndDate,
     required this.onStartDateChanged,
@@ -41,6 +42,8 @@ class RangeDaysView extends StatelessWidget {
     required this.highlightColor,
     required this.splashColor,
     required this.splashRadius,
+    required this.containerHeight,
+    required this.rowSpacing
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -137,9 +140,12 @@ class RangeDaysView extends StatelessWidget {
   /// The cell decoration of a single selected cell and the
   /// leading/trailing cell of a selected range.
   final BoxDecoration singelSelectedCellDecoration;
+  final BoxDecoration endSelectedDecration;
 
   /// The text style of the current date.
   final TextStyle currentDateTextStyle;
+  final double containerHeight;
+  final double rowSpacing;
 
   /// The cell decoration of the current date.
   final BoxDecoration currentDateDecoration;
@@ -290,7 +296,7 @@ class RangeDaysView extends StatelessWidget {
           //
           //
           style = singelSelectedCellTextStyle;
-          decoration = singelSelectedCellDecoration;
+          decoration = isEndDate? endSelectedDecration: singelSelectedCellDecoration;
         }
 
         if (isWithinRange) {
@@ -364,7 +370,7 @@ class RangeDaysView extends StatelessWidget {
 
               onEndDateChanged(dayToBuild);
             },
-            radius: splashRadius ?? _dayPickerRowHeight / 2 + 4,
+            radius: splashRadius ?? containerHeight / 2 + 4,
             splashColor: splashColor,
             highlightColor: highlightColor,
             child: dayWidget,
@@ -379,12 +385,12 @@ class RangeDaysView extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const PickerGridDelegate(
+      gridDelegate: PickerGridDelegate(
         columnCount: DateTime.daysPerWeek,
         columnPadding: 0,
-        rowPadding: 3,
-        rowExtent: _dayPickerRowHeight,
-        rowStride: _dayPickerRowHeight,
+        rowPadding: rowSpacing,
+        rowExtent: containerHeight,
+        rowStride: containerHeight,
       ),
       childrenDelegate: SliverChildListDelegate(
         dayItems,

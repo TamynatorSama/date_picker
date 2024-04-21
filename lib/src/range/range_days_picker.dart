@@ -26,6 +26,7 @@ class RangeDaysPicker extends StatefulWidget {
     this.selectedCellsTextStyle,
     this.selectedCellsDecoration,
     this.singelSelectedCellTextStyle,
+    this.endSelectedDecration,
     this.singelSelectedCellDecoration,
     this.onLeadingDateTap,
     this.onStartDateChanged,
@@ -39,6 +40,8 @@ class RangeDaysPicker extends StatefulWidget {
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel = 'Previous Day',
     this.nextPageSemanticLabel = 'Next Day',
+    this.containerHeight,
+    this.rowSpacing,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
 
@@ -75,6 +78,8 @@ class RangeDaysPicker extends StatefulWidget {
   ///
   /// Note that only dates are considered. time fields are ignored.
   final DateTime? initialDate;
+  final double? containerHeight;
+  final double? rowSpacing;
 
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to `DateTime.now()` date.
@@ -169,6 +174,7 @@ class RangeDaysPicker extends StatefulWidget {
   /// The cell decoration of a single selected cell and the
   /// leading/trailing cell of a selected range.
   final BoxDecoration? singelSelectedCellDecoration;
+  final BoxDecoration? endSelectedDecration;
 
   /// The text style of leading date showing in the header.
   ///
@@ -231,6 +237,9 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
 
   @override
   void initState() {
+    if (widget.containerHeight != null) {
+      maxHeight = (widget.containerHeight??52) * 7;
+    }
     final clampedInitailDate = DateUtilsX.clampDateToRange(
         max: widget.maxDate, min: widget.minDate, date: DateTime.now());
     _displayedMonth =
@@ -359,6 +368,12 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
               color: colorScheme.primary,
               shape: BoxShape.circle,
             );
+
+    final BoxDecoration endSelectedDecration = widget.endSelectedDecration ??
+        BoxDecoration(
+          color: colorScheme.primary,
+          shape: BoxShape.circle,
+        );
 
     //
     //
@@ -492,6 +507,8 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                 enabledCellsTextStyle: enabledCellsTextStyle,
                 enabledCellsDecoration: enabledCellsDecoration,
                 disabledCellsTextStyle: disabledCellsTextStyle,
+                rowSpacing: widget.rowSpacing ??3,
+                containerHeight: widget.containerHeight ??52,
                 disabledCellsDecoration: disbaledCellsDecoration,
                 currentDateDecoration: currentDateDecoration,
                 currentDateTextStyle: currentDateTextStyle,
@@ -500,6 +517,7 @@ class __RangeDaysPickerState extends State<RangeDaysPicker> {
                 singelSelectedCellTextStyle: singelSelectedCellTextStyle,
                 singelSelectedCellDecoration: singelSelectedCellDecoration,
                 highlightColor: highlightColor,
+                endSelectedDecration: endSelectedDecration,
                 splashColor: splashColor,
                 splashRadius: widget.splashRadius,
                 onEndDateChanged: (value) =>

@@ -30,6 +30,11 @@ class MyApp extends StatelessWidget {
                 children: [
                   RangeDatePicker(
                     centerLeadingDate: true,
+                    containerHeight: 30,
+                    endSelectedDecration: BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle
+                    ),
                     customHeaderBuilder: ((details) => ConstrainedBox(
                         constraints: BoxConstraints(
                             maxWidth:

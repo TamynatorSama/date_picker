@@ -70,6 +70,7 @@ class RangeDatePicker extends StatefulWidget {
     this.selectedCellsDecoration,
     this.singelSelectedCellTextStyle,
     this.singelSelectedCellDecoration,
+    this.endSelectedDecration,
     this.leadingDateTextStyle,
     this.slidersColor,
     this.slidersSize,
@@ -80,6 +81,8 @@ class RangeDatePicker extends StatefulWidget {
     this.centerLeadingDate = false,
     this.previousPageSemanticLabel,
     this.nextPageSemanticLabel,
+    this.containerHeight,
+    this.rowSpacing,
   }) {
     assert(!minDate.isAfter(maxDate), "minDate can't be after maxDate");
   }
@@ -90,6 +93,9 @@ class RangeDatePicker extends StatefulWidget {
   /// Note that only dates are considered. time fields are ignored.
   final DateTimeRange? selectedRange;
 
+
+  final double? containerHeight;
+  final double? rowSpacing;
   /// The date to which the picker will consider as current date. e.g (today).
   /// If not specified, the picker will default to today's date.
   ///
@@ -207,6 +213,7 @@ class RangeDatePicker extends StatefulWidget {
   /// If not provided, `singelSelectedCellDecoration` is a circle with the color specified
   /// in `selectedCellsDecoration`, using [ColorScheme.primary].
   final BoxDecoration? singelSelectedCellDecoration;
+  final BoxDecoration? endSelectedDecration;
 
   /// The text style of leading date showing in the header.
   ///
@@ -315,6 +322,9 @@ class _RangeDatePickerState extends State<RangeDatePicker> {
           child: RangeDaysPicker(
             centerLeadingDate: widget.centerLeadingDate,
             customHeaderBuilder: widget.customHeaderBuilder,
+            endSelectedDecration: widget.endSelectedDecration,
+            containerHeight: widget.containerHeight,
+            rowSpacing:  widget.rowSpacing,
             currentDate:
                 DateUtils.dateOnly(widget.currentDate ?? DateTime.now()),
             initialDate: _diplayedDate,
